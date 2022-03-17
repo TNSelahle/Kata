@@ -16,6 +16,8 @@ namespace Kata.Core.Tests
             _sourceMock = new(MockBehavior.Strict);
             _destinationMock = new();
             _copier = new Copier(_sourceMock.Object, _destinationMock.Object);
+
+            _destinationMock.Setup(x => x.WriteChar(It.IsAny<char>()));
         }
 
         [Test]
@@ -23,7 +25,6 @@ namespace Kata.Core.Tests
         {
             // Arrange
             _sourceMock.Setup(x => x.ReadChar()).Returns('\n');
-            _destinationMock.Setup(x => x.WriteChar(It.IsAny<char>()));
 
             // Act
             _copier.Copy();
@@ -39,7 +40,6 @@ namespace Kata.Core.Tests
             _sourceMock.SetupSequence(x => x.ReadChar())
                 .Returns('a')
                 .Returns('\n');
-            _destinationMock.Setup(x => x.WriteChar(It.IsAny<char>()));
 
             // Act
             _copier.Copy();
@@ -64,7 +64,6 @@ namespace Kata.Core.Tests
                 .Returns('o')
                 .Returns('d')
                 .Returns('e');
-            _destinationMock.Setup(x => x.WriteChar(It.IsAny<char>()));
 
             // Act
             _copier.Copy();
@@ -79,7 +78,6 @@ namespace Kata.Core.Tests
         [Test]
         public void ReadsMultipleCharactersThenWritesToDestination()
         {
-
             // Arrange
             int n = 6;
             _sourceMock.Setup(x => x.ReadChars(n)).Returns(new char[] { 'a', 'b', 'c', 'd', '\n', 'z' });
