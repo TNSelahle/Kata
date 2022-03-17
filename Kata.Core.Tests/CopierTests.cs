@@ -91,5 +91,24 @@ namespace Kata.Core.Tests
             _destinationMock.Verify(x => x.WriteChars(It.IsAny<char[]>()), Times.Once);
             _sourceMock.VerifyNoOtherCalls();
         }
+
+        [Test]
+        public void ReadsMultipleCharactersThenWritesToDestinationWithoutNewline()
+        {
+            // Arrange
+            int n = 8;
+            var shouldReadChars = new char[] { 'a', 'b', 'c', 'd', '\n', 'z', 'y', 'u' };
+            var shouldWriteChars = new char[] { 'a', 'b', 'c', 'd' };
+            _sourceMock.Setup(x => x.ReadChars(n)).Returns(shouldReadChars);
+            _destinationMock.Setup(x => x.WriteChars(It.IsAny<char[]>()));
+
+            // Act
+            _copier.CopyMultiple(n);
+
+            // Assert
+            _sourceMock.Verify(x => x.ReadChars(n), Times.Once);
+            _destinationMock.Verify(x => x.WriteChars(shouldWriteChars), Times.Once);
+            _sourceMock.VerifyNoOtherCalls();
+        }
     }
 }
