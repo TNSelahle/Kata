@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Kata.Core.Contracts;
 using Moq;
-using NUnit;
 using NUnit.Framework;
 
 namespace Kata.Core.Tests

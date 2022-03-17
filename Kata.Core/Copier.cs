@@ -1,14 +1,14 @@
-﻿using System;
+﻿using Kata.Core.Contracts;
 
-namespace Kata.Core.Tests
+namespace Kata.Core
 {
     public class Copier
     {
         private ISource _source;
 
-        public Copier(ISource @object)
+        public Copier(ISource source)
         {
-            this._source = @object;
+            this._source = source;
         }
 
         public void Copy()

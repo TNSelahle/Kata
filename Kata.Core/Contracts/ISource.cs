@@ -1,4 +1,4 @@
-﻿namespace Kata.Core.Tests
+﻿namespace Kata.Core.Contracts
 {
     public interface ISource
     {
