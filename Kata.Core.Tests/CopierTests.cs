@@ -6,16 +6,27 @@ namespace Kata.Core.Tests
 {
     public class CopierTests
     {
+        private Mock<ISource> _sourceMock;
+        private Mock<IDestination> _destinationMock;
+        private Copier _copier;
+
+        [SetUp]
+        public void Setup()
+        {
+            _sourceMock = new(MockBehavior.Strict);
+            _destinationMock = new(MockBehavior.Strict);
+            _copier = new Copier(_sourceMock.Object, _destinationMock.Object);
+        }
+
         [Test]
         public void ReadsCharFromSource()
         {
             // Arrange
-            Mock<ISource> _sourceMock = new();
-            Mock<IDestination> _destinationMock = new();
-            var copier = new Copier(_sourceMock.Object, _destinationMock.Object);
+            _sourceMock.Setup(x => x.ReadChar()).Returns('a');
+            _destinationMock.Setup(x => x.WriteChar(It.IsAny<char>()));
 
             // Act
-            copier.Copy();
+            _copier.Copy();
 
             // Assert
             _sourceMock.Verify(x => x.ReadChar(), Times.Once);
@@ -24,17 +35,12 @@ namespace Kata.Core.Tests
         [Test]
         public void WritesCharToDestinationAfterReadingFromSource()
         {
-            // Arrange
-            Mock<ISource> _sourceMock = new(MockBehavior.Strict);
-            Mock<IDestination> _destinationMock = new(MockBehavior.Strict);
-            var copier = new Copier(_sourceMock.Object, _destinationMock.Object);
-
             MockSequence sequence = new();
             _sourceMock.InSequence(sequence).Setup(x => x.ReadChar()).Returns('a');
             _destinationMock.InSequence(sequence).Setup(x => x.WriteChar(It.IsAny<char>()));
 
             // Act
-            copier.Copy();
+            _copier.Copy();
 
             // Assert
             _sourceMock.Verify(x => x.ReadChar(), Times.Once);

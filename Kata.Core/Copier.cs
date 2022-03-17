@@ -4,7 +4,7 @@ namespace Kata.Core
 {
     public class Copier
     {
-        private ISource _source;
+        private readonly ISource _source;
         private readonly IDestination _destination;
 
         public Copier(ISource source, IDestination destination)
