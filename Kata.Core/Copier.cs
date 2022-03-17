@@ -26,7 +26,9 @@ namespace Kata.Core
 
         public void CopyMultiple(int n)
         {
-            throw new NotImplementedException();
+            char[] readChars = _source.ReadChars(n);
+
+            _destination.WriteChars(readChars);
         }
     }
 }
