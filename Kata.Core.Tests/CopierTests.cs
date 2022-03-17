@@ -22,7 +22,7 @@ namespace Kata.Core.Tests
         public void ReadsCharFromSource()
         {
             // Arrange
-            _sourceMock.Setup(x => x.ReadChar()).Returns('a');
+            _sourceMock.Setup(x => x.ReadChar()).Returns('\n');
             _destinationMock.Setup(x => x.WriteChar(It.IsAny<char>()));
 
             // Act
@@ -36,15 +36,16 @@ namespace Kata.Core.Tests
         public void WritesCharToDestinationAfterReadingFromSource()
         {
             // Arrange
-            MockSequence sequence = new();
-            _sourceMock.InSequence(sequence).Setup(x => x.ReadChar()).Returns('a');
-            _destinationMock.InSequence(sequence).Setup(x => x.WriteChar(It.IsAny<char>()));
+            _sourceMock.SetupSequence(x => x.ReadChar())
+                .Returns('a')
+                .Returns('\n');
+            _destinationMock.Setup(x => x.WriteChar(It.IsAny<char>()));
 
             // Act
             _copier.Copy();
 
             // Assert
-            _sourceMock.Verify(x => x.ReadChar(), Times.Once);
+            _sourceMock.Verify(x => x.ReadChar(), Times.Exactly(2));
             _destinationMock.Verify(x => x.WriteChar(It.IsAny<char>()), Times.Once);
         }
 
@@ -70,7 +71,9 @@ namespace Kata.Core.Tests
 
             // Assert
             _sourceMock.Verify(x => x.ReadChar(), Times.Exactly(n));
-            _destinationMock.Verify(x => x.WriteChar(It.IsAny<char>()), Times.Exactly(n - 1));
+            _destinationMock.Verify(x => x.WriteChar('t'), Times.Once);
+            _destinationMock.Verify(x => x.WriteChar('e'), Times.Exactly(2));
+            _destinationMock.Verify(x => x.WriteChar('d'), Times.Never);
         }
     }
 }

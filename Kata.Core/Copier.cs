@@ -17,7 +17,11 @@ namespace Kata.Core
         {
             char readChar = _source.ReadChar();
 
-            _destination.WriteChar(readChar);
+            while (readChar != '\n')
+            {
+                _destination.WriteChar(readChar);
+                readChar = _source.ReadChar();
+            }
         }
     }
 }
