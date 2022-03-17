@@ -27,8 +27,16 @@ namespace Kata.Core
         public void CopyMultiple(int n)
         {
             char[] readChars = _source.ReadChars(n);
+            int size = Array.IndexOf(readChars, '\n');
 
-            _destination.WriteChars(readChars);
+            if (size != -1)
+            {
+                char[] writeChars = new char[size];
+                for (int i = 0; i < size; i++)
+                    writeChars[i] = readChars[i];
+
+                _destination.WriteChars(writeChars);
+            }
         }
     }
 }
