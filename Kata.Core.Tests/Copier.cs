@@ -13,7 +13,7 @@ namespace Kata.Core.Tests
 
         public void Copy()
         {
-            throw new NotImplementedException();
+            char readChar = _source.ReadChar();
         }
     }
 }
