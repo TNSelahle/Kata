@@ -16,6 +16,8 @@ namespace Kata.Core
         public void Copy()
         {
             char readChar = _source.ReadChar();
+
+            _destination.WriteChar(readChar);
         }
     }
 }
