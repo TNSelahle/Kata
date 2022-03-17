@@ -2,6 +2,8 @@
 {
     public interface IDestination
     {
-        public void WriteChar(char v);
+        public void WriteChar(char c);
+
+        public void WriteChars(char[] chars);
     }
 }

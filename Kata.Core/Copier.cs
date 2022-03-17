@@ -23,5 +23,10 @@ namespace Kata.Core
                 readChar = _source.ReadChar();
             }
         }
+
+        public void CopyMultiple(int n)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -14,7 +14,7 @@ namespace Kata.Core.Tests
         public void Setup()
         {
             _sourceMock = new(MockBehavior.Strict);
-            _destinationMock = new(MockBehavior.Strict);
+            _destinationMock = new();
             _copier = new Copier(_sourceMock.Object, _destinationMock.Object);
         }
 
@@ -74,6 +74,24 @@ namespace Kata.Core.Tests
             _destinationMock.Verify(x => x.WriteChar('t'), Times.Once);
             _destinationMock.Verify(x => x.WriteChar('e'), Times.Exactly(2));
             _destinationMock.Verify(x => x.WriteChar('d'), Times.Never);
+        }
+
+        [Test]
+        public void ReadsMultipleCharactersThenWritesToDestination()
+        {
+
+            // Arrange
+            int n = 6;
+            _sourceMock.Setup(x => x.ReadChars(n)).Returns(new char[] { 'a', 'b', 'c', 'd', '\n', 'z' });
+            _destinationMock.Setup(x => x.WriteChars(It.IsAny<char[]>()));
+
+            // Act
+            _copier.CopyMultiple(n);
+
+            // Assert
+            _sourceMock.Verify(x => x.ReadChars(n), Times.Once);
+            _destinationMock.Verify(x => x.WriteChars(It.IsAny<char[]>()), Times.Once);
+            _sourceMock.VerifyNoOtherCalls();
         }
     }
 }
