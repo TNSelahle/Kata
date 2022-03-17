@@ -35,6 +35,7 @@ namespace Kata.Core.Tests
         [Test]
         public void WritesCharToDestinationAfterReadingFromSource()
         {
+            // Arrange
             MockSequence sequence = new();
             _sourceMock.InSequence(sequence).Setup(x => x.ReadChar()).Returns('a');
             _destinationMock.InSequence(sequence).Setup(x => x.WriteChar(It.IsAny<char>()));
@@ -45,6 +46,31 @@ namespace Kata.Core.Tests
             // Assert
             _sourceMock.Verify(x => x.ReadChar(), Times.Once);
             _destinationMock.Verify(x => x.WriteChar(It.IsAny<char>()), Times.Once);
+        }
+
+        [Test]
+        public void ReadsFromSourceUntilNewlineIsEncountered()
+        {
+            // Arrange
+            int n = 5;
+            _sourceMock.SetupSequence(x => x.ReadChar())
+                .Returns('l')
+                .Returns('e')
+                .Returns('e')
+                .Returns('t')
+                .Returns('\n')
+                .Returns('c')
+                .Returns('o')
+                .Returns('d')
+                .Returns('e');
+            _destinationMock.Setup(x => x.WriteChar(It.IsAny<char>()));
+
+            // Act
+            _copier.Copy();
+
+            // Assert
+            _sourceMock.Verify(x => x.ReadChar(), Times.Exactly(n));
+            _destinationMock.Verify(x => x.WriteChar(It.IsAny<char>()), Times.Exactly(n - 1));
         }
     }
 }
